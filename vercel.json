@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "nutrition_project/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "nutrition_project/wsgi.py"
+    }
+  ]
+}
