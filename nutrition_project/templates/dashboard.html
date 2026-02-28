@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+
+        .card-custom {
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #198754, #20c997);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .stat-card h3 {
+            font-weight: bold;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-custom {
+            border-radius: 30px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <!-- Profile -->
+    <div class="profile-card mb-4">
+        <h4>👋 Welcome, {{ request.user.username }}</h4>
+        <p>Email: {{ request.user.email }}</p>
+        <p>Date: {{ today }}</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="row text-center mb-4">
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h5>Total Calories</h5>
+                <h3>{{ total_calories }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h5>Protein (g)</h5>
+                <h3>{{ total_protein }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h5>Carbs (g)</h5>
+                <h3>{{ total_carbs }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h5>Fats (g)</h5>
+                <h3>{{ total_fats }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Alerts -->
+    {% if alerts %}
+    <div class="alert alert-warning card-custom">
+        {% for alert in alerts %}
+            <p>{{ alert }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Buttons -->
+    <div class="text-center my-4">
+        <a href="#" class="btn btn-success btn-custom me-2">➕ Add Food</a>
+        <a href="#" class="btn btn-primary btn-custom me-2">📊 View Report</a>
+        <a href="#" class="btn btn-info btn-custom me-2">🗓️ View History</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger btn-custom">🚪 Logout</a>
+    </div>
+
+    <!-- Recent Logs -->
+    <div class="card card-custom">
+        <div class="card-header bg-success text-white">
+            Recent Food Logs
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Food</th>
+                        <th>Calories</th>
+                        <th>Protein</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for log in recent_logs %}
+                    <tr>
+                        <td>{{ log.food.name }}</td>
+                        <td>{{ log.food.calories }}</td>
+                        <td>{{ log.food.protein }}</td>
+                        <td>{{ log.date }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No food added today</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
